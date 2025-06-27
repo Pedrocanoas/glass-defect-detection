@@ -1,37 +1,58 @@
 import os
-import ultralytics
+import time
+from datetime import datetime
 from ultralytics import YOLO
+import ultralytics
 
-dir = 'datasets\\'
+# Configurações
+DIR = 'datasets'
+MODEL_PATH = 'yolov8m.pt'
+DATA_YAML = 'config.yaml'
+EPOCHS = 200
+PATIENCE = 100
+CONF_TRAIN = 0.01
+CONF_PREDICT = 0.4
+SINGLE_CLASS = True
+timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+filename = f"result_{timestamp}.jpg"
+
+RESULT_PATH = os.path.join(DIR, 'results', filename)
+IMAGE_TO_PREDICT = os.path.join(DIR, 'images', 'test', 'store.jpg')
 
 def main():
-    ultralytics.checks()  # Realiza verificações básicas para garantir que o ambiente está configurado corretamente
-    model = YOLO('yolov8m.pt')  # Carrega um modelo pré-treinado (recomendado para treinamento)
+    start_time = time.time()
 
-    # Treine o modelo usando o conjunto de dados especificado no arquivo config.yaml
-    # epochs=200: Treina o modelo por 200 épocas
-    # patience=100: Define a paciência do treinamento para 100 épocas (quantidade de épocas sem melhoria antes de parar)
-    # val=True: Realiza validação ao final de cada época de treinamento
-    # batch=-1: Ajusta automaticamente o tamanho do lote com base nos recursos disponíveis
-    # single_cls=True: Trata todas as classes como uma única classe durante o treinamento (útil para detecção de uma única classe)
-    results = model.train(data="config.yaml", epochs=200, patience=100, val=True, batch=1, single_cls=True)  
+    print("🔍 Verificando ambiente...")
+    ultralytics.checks()
 
-    # Avalia o desempenho do modelo no conjunto de validação
-    # conf=0.50: Define um limiar de confiança de 50% para as predições durante a validação
-    # save_json=True: Salva os resultados da avaliação em um arquivo JSON
-    results = model.val(conf=0.01, save_json=True)  
+    print(f"📦 Carregando modelo: {MODEL_PATH}")
+    model = YOLO(MODEL_PATH)
 
-    # Realiza a predição em uma imagem específica localizada no caminho 'datasets\\test\\store.jpg'
-    # conf=0.50: Define um limiar de confiança de 50% para as predições
-    results = model.predict(['datasets\\test\\store.jpg'], conf=0.4, show_labels=False)
+    print("🚀 Iniciando treinamento...")
+    train_results = model.train(
+        data=DATA_YAML,
+        epochs=EPOCHS,
+        patience=PATIENCE,
+        val=True,
+        batch=1,
+        single_cls=SINGLE_CLASS
+    )
 
-    # Process results list
-    for result in results:
-    # Exibe o resultado na tela, mostrando apenas as caixas delimitadoras e a confiabilidade, sem as labels
+    print("📈 Avaliando modelo...")
+    val_results = model.val(conf=CONF_TRAIN, save_json=True)
+
+    print(f"🖼️ Realizando predição em: {IMAGE_TO_PREDICT}")
+    pred_results = model.predict([IMAGE_TO_PREDICT], conf=CONF_PREDICT, show_labels=False)
+
+    # Garante que a pasta de resultados existe
+    os.makedirs(os.path.dirname(RESULT_PATH), exist_ok=True)
+
+    for result in pred_results:
         result.show(labels=False, conf=True)
-        # Constrói o caminho completo para salvar o arquivo com o resultado
-        save_path = os.path.join(dir + 'results', 'result_v3.jpg')
-        result.save(filename=save_path)
+        result.save(filename=RESULT_PATH)
+        print(f"💾 Resultado salvo em: {RESULT_PATH}")
+
+    print(f"✅ Finalizado em {time.time() - start_time:.2f} segundos.")
 
 if __name__ == '__main__':
     main()
