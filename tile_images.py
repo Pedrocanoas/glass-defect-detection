@@ -7,7 +7,7 @@ OVERLAP = 0  # Pode usar 0 ou algo como 64 se quiser tiles com sobreposição
 CLASSES = None  # None = aceita qualquer classe
 
 # Diretórios base
-BASE_DIR = 'dataset'
+BASE_DIR = 'dataset_rawdata'
 OUT_BASE_DIR = 'dataset_tiled'
 SPLITS = ['train', 'val', 'test']
 IMG_DIR = os.path.join(BASE_DIR, 'images')

@@ -4,7 +4,7 @@ import random
 
 # Configurações
 input_dir = "rawdata"
-output_dir = "datasets"
+output_dir = "dataset_rawdata"
 split_ratios = {
     "train": 0.7,
     "val": 0.2,
