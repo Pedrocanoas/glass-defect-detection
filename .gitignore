@@ -9,3 +9,8 @@
 **.webp
 **.zip
 **.txt
+**.yaml
+**.cache
+**.log
+**.tmp
+runs/

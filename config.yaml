@@ -1,7 +1,7 @@
-path: datasets # dataset root dir
-train: images/train  # train images (relative to 'path')
-val: images/val  # val images (relative to 'path')
-test: images/test  # test images (relative to 'path')
+path: dataset_tiled # dataset root dir
+train: images/train
+val: images/val
+test: images/test
 
 # Classes
 names:
