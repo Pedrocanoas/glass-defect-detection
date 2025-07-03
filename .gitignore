@@ -13,4 +13,4 @@
 **.cache
 **.log
 **.tmp
-runs/
+runs/**
