@@ -6,12 +6,12 @@ import ultralytics
 
 # Configurações
 DIR = 'dataset_tiled'
-MODEL_PATH = 'yolov8m.pt'
+MODEL_PATH = 'yolo11m.pt'
 DATA_YAML = 'config.yaml'
-EPOCHS = 50
-PATIENCE = 10
+EPOCHS = 5
+PATIENCE = 1
 CONF_TRAIN = 0.01
-CONF_PREDICT = 0.4
+CONF_PREDICT = 0.50
 SINGLE_CLASS = True
 IMAGE_TO_PREDICT_DIR = os.path.join(DIR, 'images', 'test')
 RESULT_DIR = os.path.join(DIR, 'results')
@@ -32,7 +32,6 @@ def main():
         epochs=EPOCHS,
         patience=PATIENCE,
         val=True,
-        cache=True,
         batch=2,
         single_cls=SINGLE_CLASS,
         lr0=0.002,
@@ -64,7 +63,6 @@ def main():
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"result_{i+1}_{timestamp}.jpg"
         result_path = os.path.join(RESULT_DIR, filename)
-        result.show(labels=False, conf=True)
         result.save(filename=result_path)
         print(f"💾 Resultado salvo em: {result_path}")
 

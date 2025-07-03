@@ -2,18 +2,18 @@ import os
 import cv2
 
 # CONFIGURAÇÕES
-TILE_SIZE = 640
-OVERLAP = 0  # Pode usar 0 ou algo como 64 se quiser tiles com sobreposição
-CLASSES = None  # None = aceita qualquer classe
+TILE_SIZE = 320
+OVERLAP = -128
+CLASSES = None
 
 # Diretórios base
 BASE_DIR = 'dataset_rawdata'
-OUT_BASE_DIR = 'dataset_tiled'
+OUT_BASE_DIR = 'dataset_tiled_tiny'
 SPLITS = ['train', 'val', 'test']
 IMG_DIR = os.path.join(BASE_DIR, 'images')
 LBL_DIR = os.path.join(BASE_DIR, 'labels')
-OUT_IMG_DIR = os.path.join(OUT_BASE_DIR, 'images_tiled')
-OUT_LBL_DIR = os.path.join(OUT_BASE_DIR, 'labels_tiled')
+OUT_IMG_DIR = os.path.join(OUT_BASE_DIR, 'images')
+OUT_LBL_DIR = os.path.join(OUT_BASE_DIR, 'labels')
 
 def yolo_to_bbox(label, img_w, img_h):
     cls, x, y, w, h = map(float, label.split())
