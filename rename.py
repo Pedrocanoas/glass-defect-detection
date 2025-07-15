@@ -1,7 +1,7 @@
 import os
 
 # Caminho da pasta onde estão os arquivos
-pasta = 'images'
+pasta = 'rawdata1'
 
 # Lista de arquivos na pasta (ignorando pastas)
 arquivos = [f for f in os.listdir(pasta) if os.path.isfile(os.path.join(pasta, f))]

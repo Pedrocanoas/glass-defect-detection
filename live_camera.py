@@ -6,8 +6,8 @@ from ultralytics import YOLO
 from datetime import datetime
 import os
 
-MODEL_PATH = 'runs/detect/train19/weights/best.pt'
-CAMERA_URL = 'http://10.109.61.14:8080/video'
+MODEL_PATH = 'best.pt'  # Caminho para o modelo YOLOv8
+CAMERA_URL = 'http://10.109.61.34:8080/video'
 INFERENCE_INTERVAL = 1
 OUTPUT_DIR = "resultados"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -40,7 +40,7 @@ def inference_thread():
                 frame = None
 
         if frame is not None:
-            results = model.predict(source=frame, conf=0.4, verbose=False)
+            results = model.predict(source=frame, conf=1.0, verbose=False)
             annotated = results[0].plot()
 
             
